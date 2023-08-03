@@ -7,7 +7,6 @@ import LogOut from "./LogOut";
 
 function Game({ channel, setChannel }) {
   let restartGame;
-  console.log(channel);
   const [playersJoined, setPlayersJoined] = useState(
     channel.state.watcher_count === 2
   );
@@ -15,12 +14,10 @@ function Game({ channel, setChannel }) {
 
   useEffect(() => {
     const handleUserStartWatching = (event) => {
-      console.log("event");
       setPlayersJoined(event.watcher_count === 2);
     };
 
     const handleUserStopWatching = (event) => {
-      console.log("Channel updated:", event);
       setPlayersJoined(event.watcher_count === 2);
     };
 

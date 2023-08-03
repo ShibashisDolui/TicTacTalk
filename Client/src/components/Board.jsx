@@ -15,7 +15,7 @@ function Board({ result, setResult, restartGame }) {
   const { channel } = useChannelStateContext();
   const { client } = useChatContext();
 
-  console.log("Hello");
+  // console.log(turn);
 
   // Check for win patterns when the board changes
   useLayoutEffect(() => {
@@ -51,6 +51,8 @@ function Board({ result, setResult, restartGame }) {
     setPlayer("X");
     setTurn("X");
     setResult({ winner: "none", state: "none" });
+    setTurnCount(0);
+    setMyMove("X");
     await channel.sendEvent({
       type: "restart",
     });
@@ -58,7 +60,7 @@ function Board({ result, setResult, restartGame }) {
 
   // Choose a square and update the board
   const chooseSquare = async (square) => {
-    if (turn === player && (board[square] !== "X" || board[square] !== "O")) {
+    if (turn === player && board[square] !== "X" && board[square] !== "O") {
       setTurn(player === "X" ? "O" : "X");
 
       await channel.sendEvent({
@@ -92,6 +94,7 @@ function Board({ result, setResult, restartGame }) {
 
       if (foundWinningPattern) {
         hasWon = true;
+
         if (board[currPattern[0]] === myMove) {
           toast("You won");
         } else {
@@ -116,7 +119,7 @@ function Board({ result, setResult, restartGame }) {
     });
 
     if (filled) {
-      console.log("Tied");
+      // console.log("Tied");
       toast("Game tied");
       setResult({ winner: "none", state: "tie" });
     }
@@ -151,6 +154,8 @@ function Board({ result, setResult, restartGame }) {
         );
         setPlayer("X");
         setTurn("X");
+        setMyMove("X");
+        setTurnCount(0);
         setResult({ winner: "none", state: "none" });
       }
     };
